@@ -1,35 +1,24 @@
 const bcrypt = require("bcryptjs");
 const db = require('../config/config-db.js');
-const jwt = require('jsonwebtoken');    
+const jwt = require('jsonwebtoken'); 
+import Auth from "../Dto/AuthDto";   
 import { Request, Response } from "express";
 import UserRepository from "../repositories/UserRepository";
+import {generateToken} from "../helpers/generateToken"
+
 
 let auth = async (req: Request, res: Response) => {
     try {
         const {email, password} = req.body;
-        const result : any= await UserRepository.login(email);
-        console.log(333, result);
-        console.log(password);
+        const result : any= await UserRepository.login(new Auth(email, password));
         if (result[0].length > 0){
             const isPasswordValid = await bcrypt.compare(password, result[0][0].password);
-            
-
-            const accesToken = generateAccesToken(email);
-
-            function generateAccesToken(email: any){
-                return jwt.sign( {email: email}, process.env.SECRET, { expiresIn: 60 * 60});
-            }
-            
-            res.header('authorization', accesToken).json({
-                message: 'Usuario autenticado',
-                Token: accesToken
-                
-            })
-
-           
-            
-            
-            
+            if(isPasswordValid){
+                return res.status(200).json({
+                    status: "Succesful Authentication",
+                    token:  await generateToken(email)
+                })
+            }   
         }
         return res.status(401).json({ 
             status: 'Incorrect username or password'
@@ -41,15 +30,3 @@ let auth = async (req: Request, res: Response) => {
 
 export default auth;
 
-export async function validateToken(req: Request, res: Response, next : any){
-    const accesToken = req.headers['authorization'] || req.query.accesToken;
-    if(!accesToken)res.send('Acces denied');
-
-    jwt.verify(accesToken, process.env.SECRET, (err: Error, email: any) =>{
-        if(err){
-            res.send('Acces denied, token expired or incorrect')
-        }else{
-            next();
-        }
-    })
-}
