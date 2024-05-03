@@ -5,21 +5,20 @@ import Auth from "../Dto/AuthDto";
 import { Request, Response } from "express";
 import UserRepository from "../repositories/UserRepository";
 import {generateToken} from "../helpers/generateToken"
+import UserService from "../services/UserServices";
 
 
 let auth = async (req: Request, res: Response) => {
     try {
         const {email, password} = req.body;
-        const result : any= await UserRepository.login(new Auth(email, password));
-        if (result[0].length > 0){
-            const isPasswordValid = await bcrypt.compare(password, result[0][0].password);
-            if(isPasswordValid){
+        const login = await UserService.auth(new Auth(email, password));
+            if(login.logged){
                 return res.status(200).json({
-                    status: "Succesful Authentication",
+                    status: login.status,
                     token:  await generateToken(email)
-                })
+                });
             }   
-        }
+        
         return res.status(401).json({ 
             status: 'Incorrect username or password'
         });
@@ -28,5 +27,5 @@ let auth = async (req: Request, res: Response) => {
     }
 }
 
-export default auth;
 
+export default auth;

@@ -1,6 +1,8 @@
 import db from '../config/config-db';
 import Auth from '../Dto/AuthDto';
 import User from '../Dto/UserDto';
+const bcrypt = require("bcryptjs");
+
 
 class UserRepository {
 
@@ -13,8 +15,9 @@ class UserRepository {
     static async login(auth: Auth){
         const sql = 'SELECT password FROM users WHERE email=?';
         const values = [auth.email];
-        return db.execute(sql,values)
-    }
+        return db.execute(sql, values);
+        }
+    
 
     static async getReserves(user: User){
         const sql = 'SELECT * FROM reserves WHERE email =?'

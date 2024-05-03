@@ -1,13 +1,14 @@
 import internal from "stream";
 
 class User {
-    email: string;
-    nombres: string;
-    apellidos: string;
-    telefono: string;
-    password: string;
-    cantidadPersonas: number;
-    preferenciasDieta: string;
+    
+    private _email: string;
+    private _nombres: string;
+    private _apellidos: string;
+    private _telefono: string;
+    private _password: string;
+    private _cantidadPersonas: number;
+    private _preferenciasDieta: string;
     
     constructor(
         email: string, nombres: string,
@@ -16,15 +17,73 @@ class User {
         preferenciasDieta: string,
        
     ) {
-        this.email = email;
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.telefono = telefono;
-        this.password = password
-        this.cantidadPersonas = cantidadPersonas;
-        this.preferenciasDieta =preferenciasDieta;
+        this._email = email;
+        this._nombres = nombres;
+        this._apellidos = apellidos;
+        this._telefono = telefono;
+        this._password = password
+        this._cantidadPersonas = cantidadPersonas;
+        this._preferenciasDieta =preferenciasDieta;
         
     }
+
+    //Getters
+    get email(): string{
+        return this._email
+    }
+
+    get nombres(): string{
+        return this._nombres
+    }
+
+    get apellidos(): string{
+        return this._apellidos
+    }
+
+    get telefono(): string{
+        return this._telefono
+    }
+    get password(): string{
+        return this._password
+    }
+    get cantidadPersonas(): number{
+        return this._cantidadPersonas
+    }
+
+    get preferenciasDieta(): string{
+        return this._preferenciasDieta
+    }
+
+    //Setters
+    set email(email:string){
+        this._email = email
+    }
+
+    set nombres(nombres:string){
+        this._nombres = nombres
+    }
+
+    set apellidos(apellidos:string){
+        this._apellidos = apellidos
+    }
+
+    set telefono(telefono:string){
+        this._telefono = telefono
+    }
+
+    set password(password:string){
+        this._password = password
+    }
+
+    set cantidadPersonas(cantidadPersonas:number){
+        this._cantidadPersonas = cantidadPersonas
+    }
+
+    set preferenciasDieta(preferenciasDieta:string){
+        this._preferenciasDieta = preferenciasDieta
+    }
+
+    
 }
 
 export default User;

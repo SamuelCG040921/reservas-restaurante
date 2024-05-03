@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import UserRepository from '../repositories/UserRepository';
 import User from '../Dto/UserDto';
 import { Request, Response } from "express";
+import UserService from '../services/UserServices';
 
 
 let register = async (req: Request, res: Response) => {
@@ -16,11 +17,10 @@ let register = async (req: Request, res: Response) => {
       dietPreferences
     } = req.body;
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    const result = await UserRepository.add(new User(email, name, lastName, phoneNumber, hashedPassword, personQuantity, dietPreferences));
+    
+    const registerUser = await UserService.register(new User(email, name, lastName, phoneNumber, password, personQuantity, dietPreferences));
     return res.status(201).send(
-      { status: 'register ok', password_hasheado: hashedPassword }
+      { status: 'register ok' }
     );
   } catch (error: any) {
     if (error && error.code == "ER_DUP_ENTRY") {
