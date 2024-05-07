@@ -19,9 +19,9 @@ class UserRepository {
         }
     
 
-    static async getReserves(user: User){
-        const sql = 'SELECT * FROM reserves WHERE email =?'
-        const values = [user.email];
+    static async getReserves(email: string){
+        const sql = 'SELECT * FROM reserves WHERE user_email =?'
+        const values = [email];
         return db.execute(sql, values);
     }
 }

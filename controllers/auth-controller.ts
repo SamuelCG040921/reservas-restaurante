@@ -3,7 +3,6 @@ const db = require('../config/config-db.js');
 const jwt = require('jsonwebtoken'); 
 import Auth from "../Dto/AuthDto";   
 import { Request, Response } from "express";
-import UserRepository from "../repositories/UserRepository";
 import {generateToken} from "../helpers/generateToken"
 import UserService from "../services/UserServices";
 

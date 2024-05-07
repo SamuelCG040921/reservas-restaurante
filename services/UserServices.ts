@@ -23,6 +23,10 @@ class UserService {
             }   
             return{logged: false, status: "Incorrect username or password"}
     }
+    static async getReserves(email: string ){
+        return await UserRepository.getReserves(email);
+        
+    }
 }
 
 export default UserService;
